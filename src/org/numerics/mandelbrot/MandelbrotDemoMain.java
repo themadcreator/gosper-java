@@ -4,14 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -21,89 +19,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class MandelbrotMain {
-
-	public static final class MandelbrotPainter {
-		private final int[] colorTable;
-		
-		public MandelbrotPainter() {
-			this.colorTable = new int[500];
-			for (int i = 0; i < 500; i++) {
-				int rgb = Color.HSBtoRGB(i / 500.0f, 1.0f, 0.75f);
-				colorTable[i] = rgb;
-			}
-		}
-
-		public void fillBuffer(final MandelbrotContext<?> context, final BufferedImage img, Progress progress) {
-			final int w = img.getWidth();
-			final int h = img.getHeight();
-			
-			final int threads = 4;
-			final ThreadPoolExecutor executor = makeExecutor(threads);
-			final CountDownLatch latch = new CountDownLatch(h);
-			final ProgressIncrementor incProgress = new ProgressIncrementor(progress, w * h);
-
-			for (int y = 0; y < h; y++) {
-				final int scanlineY = y;
-				executor.submit(new Runnable() {
-					public void run() {
-						final BufferedImage scanline = getScanline(context, incProgress, w, h, scanlineY);
-						synchronized (img) {
-							img.getGraphics().drawImage(scanline, 0, scanlineY, w, scanlineY + 1, 0, 0, w, 1, null);
-						}
-						latch.countDown();
-					}
-				});
-			}
-			
-			try {
-				latch.await();
-			} catch (InterruptedException e) {
-				executor.shutdownNow();
-				Thread.currentThread().interrupt();
-				return;
-			}
-		}
-
-		public void fillBufferSingleThreaded(final MandelbrotContext<?> context, final BufferedImage img, Progress progress) {
-			final int w = img.getWidth();
-			final int h = img.getHeight();
-
-			final ProgressIncrementor incProgress = new ProgressIncrementor(progress, w * h);
-
-			for (int y = 0; y < h; y++) {
-				final int scanlineY = y;
-				final BufferedImage scanline = getScanline(context, incProgress, w, h, scanlineY);
-				img.getGraphics().drawImage(scanline, 0, scanlineY, w, scanlineY + 1, 0, 0, w, 1, null);
-			}
-		}
-
-		private ThreadPoolExecutor makeExecutor(final int threads) {
-			return new ThreadPoolExecutor(threads, threads, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>());
-		}
-
-		private BufferedImage getScanline(
-				MandelbrotContext<?> context,
-				ProgressIncrementor progress, int w, int h, int y) {
-			
-			final BufferedImage scanline = new BufferedImage(w, 1, BufferedImage.TYPE_4BYTE_ABGR);
-			final Graphics2D g = (Graphics2D) scanline.getGraphics();
-			for (int x = 0; x < w; x++) {
-				int v = context.getMandelbrotValue(x, y, w, h);
-				if (v < 0) {
-					g.setColor(Color.BLACK);
-				} else {
-					g.setColor(new Color(colorTable[v % colorTable.length]));
-				}
-				g.fillRect(x, 0, 1, 1);
-				progress.increment();
-			}
-			return scanline;
-		}
-	}
+public class MandelbrotDemoMain {
 
 	public static class PaintController {
-
 		private static ThreadPoolExecutor makeExecutor() {
 			return new ThreadPoolExecutor(1, 1, 0, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>());
 		}
@@ -279,7 +197,7 @@ public class MandelbrotMain {
 	private final ProgressPanel progress;
 	private final PaintController paintManager;
 
-	public MandelbrotMain(MandelbrotContext<?> context) {
+	public MandelbrotDemoMain(MandelbrotContext<?> context) {
 		this.panel = new JPanel();
 		this.bufferPanel = new BufferedJPanel();
 		this.progress = new ProgressPanel();
@@ -291,8 +209,8 @@ public class MandelbrotMain {
 	}
 
 	public static void main(String[] args) {
-		final MandelbrotContext<?> context = GenericMandelbrotContext.createContinuedFractionLong();
-		final MandelbrotMain demo = new MandelbrotMain(context);
+		final MandelbrotContext<?> context = GenericMandelbrotContext.createDouble();
+		final MandelbrotDemoMain demo = new MandelbrotDemoMain(context);
 		
 		final JFrame frame = new JFrame();
 		frame.setLocation(0, 0);

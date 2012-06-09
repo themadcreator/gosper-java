@@ -12,51 +12,23 @@ public class GenericMandelbrotContext<T extends Arithmetic<T>> implements Mandel
 
 	public static MandelbrotContext<DoubleNumber> createDouble() {
 		final Complex<DoubleNumber> zero = ComplexNumber.createDouble(0.0, 0.0);
-		final NumberFactory<DoubleNumber> factory = new NumberFactory<DoubleNumber>(zero);
+		final ComplexNumberFactory<DoubleNumber> factory = new ComplexNumberFactory<DoubleNumber>(zero);
 		return new GenericMandelbrotContext<DoubleNumber>(factory);
 	}
 
 	public static MandelbrotContext<ContinuedFractionNumber> createContinuedFraction() {
 		final Complex<ContinuedFractionNumber> zero = ComplexNumber.createContinuedFraction(0, 0);
-		final NumberFactory<ContinuedFractionNumber> factory = new NumberFactory<ContinuedFractionNumber>(zero);
+		final ComplexNumberFactory<ContinuedFractionNumber> factory = new ComplexNumberFactory<ContinuedFractionNumber>(zero);
 		return new GenericMandelbrotContext<ContinuedFractionNumber>(factory);
 	}
 	
 	public static MandelbrotContext<ContinuedFractionLongNumber> createContinuedFractionLong() {
 		final Complex<ContinuedFractionLongNumber> zero = ComplexNumber.createContinuedFractionLong(0, 0);
-		final NumberFactory<ContinuedFractionLongNumber> factory = new NumberFactory<ContinuedFractionLongNumber>(zero);
+		final ComplexNumberFactory<ContinuedFractionLongNumber> factory = new ComplexNumberFactory<ContinuedFractionLongNumber>(zero);
 		return new GenericMandelbrotContext<ContinuedFractionLongNumber>(factory);
 	}
 
-	public static class NumberFactory<T extends Arithmetic<T>> {
-		private final Complex<T> zero;
-
-		public NumberFactory(Complex<T> zero) {
-			this.zero = zero;
-		}
-
-		public Complex<T> getZero() {
-			return zero;
-		}
-
-		public Complex<T> valueOf(int re, int im) {
-			return valueOf(valueOf(re), valueOf(im));
-		}
-
-		public Complex<T> valueOf(T re, T im) {
-			return zero.valueOf(re, im);
-		}
-
-		public T valueOf(int i) {
-			return zero.re().valueOf(i);
-		}
-
-		public T fractionalValueOf(int num, int den) {
-			return valueOf(num).divide(valueOf(den));
-		}
-	}
-
-	private final NumberFactory<T> factory;
+	private final ComplexNumberFactory<T> factory;
 	private Complex<T> center;
 	private Complex<T> scale;
 	private int maximumIterations = 1 << 8;
@@ -64,7 +36,7 @@ public class GenericMandelbrotContext<T extends Arithmetic<T>> implements Mandel
 	private final T two;
 	private final T four;
 
-	public GenericMandelbrotContext(NumberFactory<T> factory) {
+	public GenericMandelbrotContext(ComplexNumberFactory<T> factory) {
 		this.factory = factory;
 		this.center = factory.valueOf(-1, 0);
 		this.scale = factory.valueOf(factory.fractionalValueOf(1, 100), factory.valueOf(0));
@@ -72,6 +44,10 @@ public class GenericMandelbrotContext<T extends Arithmetic<T>> implements Mandel
 		this.half = factory.fractionalValueOf(1, 2);
 		this.two = factory.fractionalValueOf(2, 1);
 		this.four = factory.valueOf(4);
+	}
+	
+	public ComplexNumberFactory<T> getFactory() {
+		return factory;
 	}
 
 	public int getMaximumIterations() {
