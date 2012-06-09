@@ -25,4 +25,8 @@ Check out this excellent talk about the details of continued fraction arithmetic
 http://perl.plover.com/classes/cftalk/
 
 ### Mandelbrot Demo ###
+
 This package also include a mandelbrot set renderer demo, which uses the numerics classes.
+
+* MandelbrotDemoMain.java - an interactive pan-and-zoom Mandelbrot demo.
+* MandelbrotImageMain.java - a standalone Mandelbrot image renderer.
