@@ -1,6 +1,7 @@
 package org.numerics;
 
 import org.numerics.continuedfraction.ContinuedFractionNumber;
+import org.numerics.continuedfranctionlong.ContinuedFractionLongNumber;
 
 
 
@@ -13,10 +14,17 @@ public class ComplexNumber<T extends Arithmetic<T>> implements Complex<T>, Arith
 	public static Complex<ContinuedFractionNumber> createContinuedFraction(int re, int im) {
 		return createContinuedFraction(new ContinuedFractionNumber(re), new ContinuedFractionNumber(im));
 	}
-
 	public static Complex<ContinuedFractionNumber> createContinuedFraction(ContinuedFractionNumber re, ContinuedFractionNumber im) {
 		return new ComplexNumber<ContinuedFractionNumber>(re, im);
 	}
+	
+	public static Complex<ContinuedFractionLongNumber> createContinuedFractionLong(int re, int im) {
+		return createContinuedFractionLong(new ContinuedFractionLongNumber(re), new ContinuedFractionLongNumber(im));
+	}
+	public static Complex<ContinuedFractionLongNumber> createContinuedFractionLong(ContinuedFractionLongNumber re, ContinuedFractionLongNumber im) {
+		return new ComplexNumber<ContinuedFractionLongNumber>(re, im);
+	}
+
 	
 	private final T re;
 	private final T im;

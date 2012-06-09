@@ -291,7 +291,7 @@ public class MandelbrotMain {
 	}
 
 	public static void main(String[] args) {
-		final MandelbrotContext<?> context = GenericMandelbrotContext.createDouble();
+		final MandelbrotContext<?> context = GenericMandelbrotContext.createContinuedFractionLong();
 		final MandelbrotMain demo = new MandelbrotMain(context);
 		
 		final JFrame frame = new JFrame();

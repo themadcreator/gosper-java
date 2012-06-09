@@ -1,21 +1,20 @@
-package org.numerics.continuedfraction.terms;
+package org.numerics.terms;
 
-import java.math.BigInteger;
 import java.util.Iterator;
 
-public abstract class TermIterator implements Iterator<BigInteger> {
+public abstract class TermIterator<T> implements Iterator<T> {
 	private boolean valid = false;
 	private boolean done = false;
-	private BigInteger cached = null;
+	private T cached = null;
 
-	protected abstract BigInteger makeNext();
+	protected abstract T makeNext();
 
 	public boolean hasNext() {
 		validate();
 		return cached != null;
 	}
 
-	public BigInteger next() {
+	public T next() {
 		validate();
 		valid = false;
 		return cached;

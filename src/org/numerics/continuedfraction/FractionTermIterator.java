@@ -1,10 +1,11 @@
-package org.numerics.continuedfraction.terms;
+package org.numerics.continuedfraction;
 
 import java.math.BigInteger;
 
 import org.numerics.FractionNumber;
+import org.numerics.terms.TermIterator;
 
-public class FractionTermIterator extends TermIterator {
+public class FractionTermIterator extends TermIterator<BigInteger> {
 	private FractionNumber r;
 
 	public FractionTermIterator(FractionNumber r) {

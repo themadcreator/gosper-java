@@ -5,9 +5,8 @@ import java.util.Iterator;
 
 import org.numerics.Arithmetic;
 import org.numerics.FractionNumber;
-import org.numerics.continuedfraction.terms.CachingIterable;
-import org.numerics.continuedfraction.terms.FractionTermIterator;
-import org.numerics.continuedfraction.terms.GosperTermIterator;
+import org.numerics.terms.CachingIterable;
+import org.numerics.terms.Terms;
 
 public class ContinuedFractionNumber implements
 	Iterable<BigInteger>,
@@ -79,7 +78,7 @@ public class ContinuedFractionNumber implements
 
 	@Override
 	public String toString() {
-		return ContinuedFractions.toString(iterator());
+		return Terms.toString(iterator());
 	}
 
 	public static void main(String[] args) {

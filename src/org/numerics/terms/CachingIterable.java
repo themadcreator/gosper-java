@@ -1,4 +1,4 @@
-package org.numerics.continuedfraction.terms;
+package org.numerics.terms;
 
 import java.util.ArrayList;
 import java.util.Iterator;

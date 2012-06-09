@@ -1,13 +1,13 @@
-package org.numerics.continuedfraction.terms;
+package org.numerics.continuedfraction;
 
 import java.math.BigInteger;
 import java.util.Iterator;
 
 import org.numerics.FractionNumber;
-import org.numerics.continuedfraction.ContinuedFractionNumber;
-import org.numerics.continuedfraction.ContinuedFractions;
+import org.numerics.terms.TermIterator;
+import org.numerics.terms.Terms;
 
-public class GosperTermIterator extends TermIterator {
+public class GosperTermIterator extends TermIterator<BigInteger> {
 	private static final BigInteger o = BigInteger.ZERO;
 	private static final BigInteger l = BigInteger.ONE;
 	private static final BigInteger n = BigInteger.ONE.negate();
@@ -171,7 +171,7 @@ public class GosperTermIterator extends TermIterator {
 		final TermIterator r0 = new FractionTermIterator(new FractionNumber(13, 11));
 		final TermIterator r1 = new FractionTermIterator(new FractionNumber(1, 2));
 		final ContinuedFractionNumber cf = new ContinuedFractionNumber(add(r0, r1));
-		System.out.println("cf: " + ContinuedFractions.toString(cf.iterator()));
+		System.out.println("cf: " + Terms.toString(cf.iterator()));
 		System.out.println("f: " + ContinuedFractions.toFraction(cf.iterator()));
 		System.out.println("d: " + ContinuedFractions.toDouble(cf.iterator()));
 	}

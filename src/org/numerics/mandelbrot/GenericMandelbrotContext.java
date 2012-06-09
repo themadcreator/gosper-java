@@ -5,6 +5,7 @@ import org.numerics.Complex;
 import org.numerics.ComplexNumber;
 import org.numerics.DoubleNumber;
 import org.numerics.continuedfraction.ContinuedFractionNumber;
+import org.numerics.continuedfranctionlong.ContinuedFractionLongNumber;
 
 
 public class GenericMandelbrotContext<T extends Arithmetic<T>> implements MandelbrotContext<T> {
@@ -19,6 +20,12 @@ public class GenericMandelbrotContext<T extends Arithmetic<T>> implements Mandel
 		final Complex<ContinuedFractionNumber> zero = ComplexNumber.createContinuedFraction(0, 0);
 		final NumberFactory<ContinuedFractionNumber> factory = new NumberFactory<ContinuedFractionNumber>(zero);
 		return new GenericMandelbrotContext<ContinuedFractionNumber>(factory);
+	}
+	
+	public static MandelbrotContext<ContinuedFractionLongNumber> createContinuedFractionLong() {
+		final Complex<ContinuedFractionLongNumber> zero = ComplexNumber.createContinuedFractionLong(0, 0);
+		final NumberFactory<ContinuedFractionLongNumber> factory = new NumberFactory<ContinuedFractionLongNumber>(zero);
+		return new GenericMandelbrotContext<ContinuedFractionLongNumber>(factory);
 	}
 
 	public static class NumberFactory<T extends Arithmetic<T>> {
@@ -97,7 +104,7 @@ public class GenericMandelbrotContext<T extends Arithmetic<T>> implements Mandel
 	public int getMandelbrotValue(int x, int y, int w, int h) {
 		Complex<T> z = factory.getZero();
 		Complex<T> c = getLocation(x, y, w, h);
-		System.out.println(String.format("%d %d %s", x, y, c));
+		//System.out.println(String.format("%d %d %s", x, y, c));
 		int i = 0;
 		while (!hasEscaped(z) && i < maximumIterations) {
 			z = z.square().add(c);
